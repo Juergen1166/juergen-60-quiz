@@ -54,7 +54,7 @@ $('nextBtn').addEventListener('click', () => doAction('next'));
 $('revealBtn').addEventListener('click', () => doAction('reveal'));
 
 $('resetBtn').addEventListener('click', () => {
-  if (confirm('Wirklich alle Spieler und Punkte löschen?')) {
+  if (confirm('Wirklich alle Antworten und Punkte zurücksetzen? Die Spieler bleiben erhalten.')) {
     doAction('reset');
   }
 });
