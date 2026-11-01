@@ -1,0 +1,107 @@
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz – Präsentation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #101827;
+      color: white;
+    }
+    .presentation {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center;
+    }
+    .presentation h1 {
+      font-size: clamp(36px, 5vw, 72px);
+    }
+    .presentation h2 {
+      font-size: clamp(30px, 4vw, 60px);
+    }
+    .presentation p,
+    .presentation li {
+      font-size: clamp(22px, 2.5vw, 36px);
+    }
+    #qr {
+      display: inline-block;
+      background: white;
+      padding: 14px;
+      margin: 20px;
+    }
+    #qr img {
+      display: block;
+    }
+    #options {
+      list-style: none;
+      padding: 0;
+    }
+    #options li {
+      margin: 16px auto;
+      padding: 16px;
+      border: 2px solid #64748b;
+      border-radius: 12px;
+      max-width: 900px;
+    }
+    #options li.correct {
+      background: #166534;
+      border-color: #4ade80;
+    }
+    #leaderboard {
+      display: inline-block;
+      text-align: left;
+      min-width: 50%;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .qr-corner {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .qr-corner img {
+      display: block;
+      width: 120px;
+      height: 120px;
+    }
+  </style>
+</head>
+<body>
+  <main class="presentation">
+    <section id="welcome">
+      <h1>Willkommen zum Geburtstagsquiz!</h1>
+      <h2>Mitspielen und Spaß haben</h2>
+      <div id="qr"></div>
+      <p>Mit dem Smartphone scannen und mitspielen!</p>
+      <p>Oder direkt öffnen:<br>
+        juergen1166.github.io/juergen-60-quiz/
+      </p>
+    </section>
+
+    <section id="game" class="hidden">
+      <p id="questionNumber"></p>
+      <h1 id="questionText"></h1>
+      <ul id="options"></ul>
+      <h2 id="answerMessage"></h2>
+      <div id="ranking" class="hidden">
+        <h2>Aktueller Punktestand</h2>
+        <ol id="leaderboard"></ol>
+      </div>
+    </section>
+  </main>
+
+  <div id="qrCorner" class="qr-corner hidden"></div>
+
+  <script src="config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script type="module" src="presentation.js"></script>
+</body>
+</html>
