@@ -40,11 +40,18 @@ async function refresh() {
       return;
     }
 
-    // Präsentation der laufenden Frage
     $('welcome').classList.add('hidden');
     $('game').classList.remove('hidden');
     $('qrCorner').classList.remove('hidden');
 
+    const revealed = data.revealed;
+
+    // Frage und Antwortmöglichkeiten nur während der Fragerunde
+    $('questionNumber').classList.toggle('hidden', revealed);
+    $('questionText').classList.toggle('hidden', revealed);
+    $('options').classList.toggle('hidden', revealed);
+
+    // Frage anzeigen
     $('questionNumber').textContent =
       `Frage ${q.number} von ${q.total}`;
 
@@ -52,26 +59,26 @@ async function refresh() {
 
     $('options').innerHTML = '';
 
-    q.options.forEach((opt, i) => {
+    q.options.forEach(opt => {
       const li = document.createElement('li');
       li.textContent = opt;
-
-      if (data.revealed &&
-          data.correct_indices?.includes(i)) {
-        li.classList.add('correct');
-      }
-
       $('options').append(li);
     });
 
-    // Richtige Antwort und Rangliste erst nach Auflösung
-    if (data.revealed) {
-      $('answerMessage').textContent = 'Die richtige Antwort ist markiert!';
+    // Nach Auflösung: richtige Antwort und Rangliste
+    if (revealed) {
+      const correctAnswers = (data.correct_indices || [])
+        .map(i => q.options[i]);
+
+      $('answerMessage').textContent =
+        'Richtige Antwort: ' + correctAnswers.join(', ');
+
+      $('answerMessage').classList.remove('hidden');
       $('ranking').classList.remove('hidden');
 
       $('leaderboard').innerHTML = '';
 
-      (data.scores || []).slice(0, 10).forEach((p, i) => {
+      (data.scores || []).slice(0, 10).forEach(p => {
         const li = document.createElement('li');
         li.textContent = `${p.name} – ${p.score} Punkte`;
         $('leaderboard').append(li);
@@ -79,6 +86,7 @@ async function refresh() {
 
     } else {
       $('answerMessage').textContent = '';
+      $('answerMessage').classList.add('hidden');
       $('ranking').classList.add('hidden');
     }
 
