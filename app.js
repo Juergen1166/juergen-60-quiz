@@ -20,7 +20,21 @@ function connect() {
 function message(id, text) {
   $(id).textContent = text || '';
 }
+$('newPlayerBtn').addEventListener('click', () => {
+  if (!confirm('Als neuer Spieler anmelden?')) return;
 
+  if (stateTimer) clearInterval(stateTimer);
+
+  localStorage.removeItem('juergen60_player_id');
+  playerId = null;
+  selected = new Set();
+  lastQuestion = 0;
+
+  $('game').classList.add('hidden');
+  $('join').classList.remove('hidden');
+  $('nickname').value = '';
+  message('joinMsg', '');
+});
 $('joinBtn').addEventListener('click', async () => {
   try {
     connect();
