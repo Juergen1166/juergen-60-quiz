@@ -238,3 +238,6 @@ footer {
   }
   .question-art-icon { font-size: 42px; }
 }
+
+/* Gezeichneter Fahrradhelm für Frage 6 */
+.bicycle-helmet { width: 88px; height: 66px; flex: none; }
