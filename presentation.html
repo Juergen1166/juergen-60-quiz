@@ -103,6 +103,25 @@
   object-fit: contain;
   margin: 0 auto;
 }
+
+    .presentation .question-art {
+      width: clamp(130px, 17vw, 190px);
+      min-height: clamp(130px, 17vw, 190px);
+      margin: 12px auto 22px;
+      border-radius: 38px;
+    }
+    .presentation .question-art-icon {
+      font-size: clamp(64px, 8vw, 104px);
+    }
+    .presentation .question-art-caption {
+      max-width: 240px;
+      font-size: clamp(12px, 1.2vw, 16px);
+    }
+    .presentation #questionText {
+      max-width: 1200px;
+      margin: 10px auto 24px;
+      line-height: 1.15;
+    }
   </style>
 </head>
 <body>
@@ -117,6 +136,7 @@
 
     <section id="game" class="hidden">
       <p id="questionNumber"></p>
+      <div id="questionArt" class="question-art" aria-hidden="true"></div>
       <h1 id="questionText"></h1>
       <ul id="options"></ul>
       <h2 id="answerMessage"></h2>

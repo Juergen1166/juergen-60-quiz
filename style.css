@@ -192,3 +192,49 @@ footer {
     padding: 17px;
   }
 }
+
+
+/* Fragebilder: kleine, festliche Motive passend zu jeder Quizfrage */
+.question-art {
+  width: 112px;
+  min-height: 112px;
+  margin: 18px auto 20px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #e6c98f;
+  border-radius: 28px;
+  background: radial-gradient(circle at 30% 20%, #fffef9, #f4e3bf 78%);
+  box-shadow: 0 9px 24px #795b2a20, inset 0 1px 0 #ffffff;
+}
+.question-art-icon {
+  display: block;
+  font-size: 52px;
+  line-height: 1.05;
+}
+.question-art-caption {
+  display: block;
+  max-width: 150px;
+  color: #80612d;
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .02em;
+}
+#questionTitle {
+  text-align: center;
+  line-height: 1.25;
+}
+@media (max-width: 450px) {
+  .question-art {
+    width: 92px;
+    min-height: 92px;
+    border-radius: 24px;
+    margin: 12px auto 16px;
+  }
+  .question-art-icon { font-size: 42px; }
+}

@@ -4,6 +4,44 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const cfg = window.QUIZ_CONFIG;
 const $ = id => document.getElementById(id);
 
+const QUESTION_ART = {
+  1: ['🚲', 'Jürgens Fahrradwelt'],
+  2: ['🚗', 'Das erste Auto'],
+  3: ['🌡️', 'Wer dreht die Heizung ab?'],
+  4: ['🏢', 'Jürgens Arbeitsplatz'],
+  5: ['🏍️', 'Das erste Motorrad'],
+  6: ['🪖', 'Abenteuer auf zwei Rädern'],
+  7: ['🎸', 'Jürgens Lieblingsmusik'],
+  8: ['🚴', 'Kilometer sammeln'],
+  9: ['🎭', 'Ein Abend im Theaterhaus'],
+  10: ['🎙️', 'Jürgens Lieblingspodcast'],
+  11: ['📱', 'Instagram & Co.'],
+  12: ['❤️', 'Eine gemeinsame Geschichte'],
+  13: ['🌍', 'Reisen in die Ferne'],
+  14: ['🏡', 'Das erste gemeinsame Zuhause'],
+  15: ['🎂', 'Geburtstage feiern'],
+  16: ['🐈', 'Die Katzenfamilie'],
+  17: ['🧳', 'Eine Reise, die warten musste'],
+  18: ['📚', 'Silkes Lesewelt'],
+  19: ['👔', 'Jürgens Stil'],
+  20: ['🔤', 'Wörter mit besonderem Dreh']
+};
+
+function showQuestionArt(questionNumber) {
+  const art = document.getElementById('questionArt');
+  if (!art) return;
+  const [icon, caption] = QUESTION_ART[Number(questionNumber)] || ['🎉', 'Geburtstagsquiz'];
+  art.replaceChildren();
+  const symbol = document.createElement('span');
+  symbol.className = 'question-art-icon';
+  symbol.textContent = icon;
+  const label = document.createElement('span');
+  label.className = 'question-art-caption';
+  label.textContent = caption;
+  art.append(symbol, label);
+}
+
+
 let db = null;
 let playerId = localStorage.getItem('juergen60_player_id');
 let lastQuestion = 0;
@@ -105,6 +143,7 @@ function render(s) {
   $('status').textContent =
     `Frage ${q.number} von ${q.total} · ${q.points} Punkte`;
 
+  showQuestionArt(q.number);
   $('questionTitle').textContent = q.text;
   $('answers').innerHTML = '';
 
