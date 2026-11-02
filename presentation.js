@@ -27,7 +27,35 @@ const QUESTION_ART = {
   20: ['🔤', 'Wörter mit besonderem Dreh']
 };
 
+
 function showQuestionArt(questionNumber) {
+  const art = document.getElementById('questionArt');
+  if (!art) return;
+
+  const [icon, caption] =
+    QUESTION_ART[Number(questionNumber)] || ['🎉', 'Geburtstagsquiz'];
+
+  art.replaceChildren();
+
+  if (Number(questionNumber) === 6) {
+    const helmet = document.createElement('img');
+    helmet.src = 'Fahrradhelm mit rotem Streifen.png';
+    helmet.alt = 'Fahrradhelm';
+    helmet.className = 'question-art-icon bicycle-helmet';
+    art.append(helmet);
+  } else {
+    const symbol = document.createElement('span');
+    symbol.className = 'question-art-icon';
+    symbol.textContent = icon;
+    art.append(symbol);
+  }
+
+  const label = document.createElement('span');
+  label.className = 'question-art-caption';
+  label.textContent = caption;
+  art.append(label);
+}
+
   const art = document.getElementById('questionArt');
   if (!art) return;
   const [icon, caption] = QUESTION_ART[Number(questionNumber)] || ['🎉', 'Geburtstagsquiz'];
