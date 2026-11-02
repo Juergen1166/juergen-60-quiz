@@ -32,23 +32,18 @@ function showQuestionArt(questionNumber) {
   if (!art) return;
   const [icon, caption] = QUESTION_ART[Number(questionNumber)] || ['🎉', 'Geburtstagsquiz'];
   art.replaceChildren();
-  if (Number(questionNumber) === 6) {
-    // Gezeichneter Fahrradhelm statt des bisherigen militärischen Helmsymbols.
-    const helmet = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    helmet.setAttribute('viewBox', '0 0 120 90');
-    helmet.setAttribute('class', 'question-art-icon bicycle-helmet');
-    helmet.setAttribute('role', 'img');
-    helmet.setAttribute('aria-label', 'Fahrradhelm');
-    helmet.innerHTML = `
-      <path d="M13 59 C14 32 33 12 59 12 C83 12 101 29 105 51 L115 56 L113 64 L19 64 C14 64 11 62 13 59Z"
-        fill="#e5ad43" stroke="#76531d" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M30 43 C35 30 46 23 59 22 M55 17 L53 30 M75 21 L70 34 M91 33 L83 43"
-        fill="none" stroke="#fff4d9" stroke-width="5" stroke-linecap="round"/>
-      <path d="M36 64 L32 76 M85 64 L91 76 M32 76 Q60 84 91 76"
-        fill="none" stroke="#76531d" stroke-width="4" stroke-linecap="round"/>
-    `;
-    art.append(helmet);
-  } else {
+if (Number(questionNumber) === 6) {
+  const helmet = document.createElement('img');
+  helmet.src = 'Fahrradhelm mit rotem Streifen.png';
+  helmet.alt = 'Fahrradhelm';
+  helmet.className = 'question-art-icon bicycle-helmet';
+  art.append(helmet);
+} else {
+  const symbol = document.createElement('span');
+  symbol.className = 'question-art-icon';
+  symbol.textContent = icon;
+  art.append(symbol);
+}
     const symbol = document.createElement('span');
     symbol.className = 'question-art-icon';
     symbol.textContent = icon;
