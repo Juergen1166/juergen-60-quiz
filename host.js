@@ -54,9 +54,54 @@ $('nextBtn').addEventListener('click', () => doAction('next'));
 $('revealBtn').addEventListener('click', () => doAction('reveal'));
 
 $('resetBtn').addEventListener('click', () => {
-  if (confirm('Wirklich alle Antworten und Punkte zurücksetzen? Die Spieler bleiben erhalten.')) {
+  const overlay = document.createElement('div');
+
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+  `;
+
+  const box = document.createElement('div');
+  box.style.cssText = `
+    background: white;
+    color: #222;
+    padding: 25px;
+    border-radius: 16px;
+    max-width: 350px;
+    width: 100%;
+    text-align: center;
+  `;
+
+  const text = document.createElement('p');
+  text.textContent =
+    'Möchtest du wirklich alle Antworten und Punkte zurücksetzen? Die Spieler bleiben erhalten.';
+  box.append(text);
+
+  const cancel = document.createElement('button');
+  cancel.textContent = 'Abbrechen';
+  cancel.style.margin = '8px';
+
+  cancel.addEventListener('click', () => overlay.remove());
+
+  const yes = document.createElement('button');
+  yes.textContent = 'Ja, zurücksetzen';
+  yes.className = 'danger';
+  yes.style.margin = '8px';
+
+  yes.addEventListener('click', () => {
+    overlay.remove();
     doAction('reset');
-  }
+  });
+
+  box.append(cancel, yes);
+  overlay.append(box);
+  document.body.append(overlay);
 });
 
 async function doAction(a) {
