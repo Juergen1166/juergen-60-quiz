@@ -196,9 +196,9 @@ footer {
 
 /* Fragebilder: kleine, festliche Motive passend zu jeder Quizfrage */
 .question-art {
-  width: 112px;
-  min-height: 112px;
-  margin: 18px auto 20px;
+  width: 150px;
+  min-height: 150px;
+  margin: 12px auto 16px;
   padding: 12px 8px;
   display: flex;
   flex-direction: column;
