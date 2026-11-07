@@ -30,12 +30,14 @@ const QUESTION_ART = {
 function showQuestionArt(questionNumber) {
   const art = document.getElementById('questionArt');
   if (!art) return;
+  if (art.dataset.questionNumber === String(questionNumber)) return;
+art.dataset.questionNumber = String(questionNumber);
   const [icon, caption] = QUESTION_ART[Number(questionNumber)] || ['🎉', 'Geburtstagsquiz'];
   art.replaceChildren();
   if (Number(questionNumber) === 6) {
     // Neues Fahrradhelm-Bild für Frage 6
 const helmet = document.createElement('img');
-helmet.src = 'frage6-fahrradhelm.png';
+helmet.src = 'Fahrradhelm%20mit%20rotem%20Streifen.png';
 helmet.alt = 'Fahrradhelm';
 helmet.className = 'question-art-icon bicycle-helmet';
 helmet.style.width = '160px';
