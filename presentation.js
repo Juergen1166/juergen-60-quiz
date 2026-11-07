@@ -39,7 +39,7 @@ function showQuestionArt(questionNumber) {
 
   if (Number(questionNumber) === 6) {
     const helmet = document.createElement('img');
-    helmet.src = 'Fahrradhelm mit rotem Streifen.png';
+    helmet.src = 'Fahrradhelm%20mit%20rotem%20Streifen.png';
     helmet.alt = 'Fahrradhelm';
     helmet.className = 'question-art-icon bicycle-helmet';
     art.append(helmet);
