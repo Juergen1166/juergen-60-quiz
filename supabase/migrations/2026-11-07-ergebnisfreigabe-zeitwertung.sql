@@ -120,7 +120,7 @@ DECLARE
   result jsonb;
   scores jsonb := '[]'::jsonb;
 BEGIN
-  SELECT * INTO r FROM public.quiz_room WHERE id = 1 FOR UPDATE;
+  SELECT * INTO r FROM public.quiz_room WHERE id = 1;
 
   -- Punktestände werden erst nach Freigabe der aktuellen Frage ausgegeben.
   IF r.revealed THEN
@@ -233,13 +233,14 @@ BEGIN
 
   -- Bewertung erfolgt bewusst erst beim Klick auf "Antwort anzeigen".
   INSERT INTO public.quiz_answers(
-    player_id, question_no, selected_indices, points_awarded
+    player_id, question_no, selected_indices, points_awarded, submitted_at
   )
   VALUES (
     p_player_id,
     r.current_question,
     (SELECT array_agg(x ORDER BY x) FROM unnest(p_selected) x),
-    0
+    0,
+    clock_timestamp()
   );
 
   RETURN jsonb_build_object('ok', true, 'saved', true);
