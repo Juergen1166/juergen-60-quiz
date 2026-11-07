@@ -40,7 +40,7 @@ const helmet = document.createElement('img');
 helmet.src = 'Fahrradhelm%20mit%20rotem%20Streifen.png';
 helmet.alt = 'Fahrradhelm';
 helmet.className = 'question-art-icon bicycle-helmet';
-helmet.style.width = '160px';
+helmet.style.width = '100px';
 helmet.style.height = 'auto';
 helmet.style.objectFit = 'contain';
 art.append(helmet);
