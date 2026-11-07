@@ -57,7 +57,9 @@ BEGIN
       UPDATE public.quiz_answers a
       SET points_awarded =
         CASE
-          WHEN a.selected_indices = q.correct_indices THEN
+          WHEN a.selected_indices = (
+            SELECT array_agg(x ORDER BY x) FROM unnest(q.correct_indices) x
+          ) THEN
             GREATEST(
               200,
               LEAST(
