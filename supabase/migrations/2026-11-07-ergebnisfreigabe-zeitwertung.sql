@@ -4,6 +4,16 @@
 ALTER TABLE public.quiz_room
   ADD COLUMN IF NOT EXISTS question_started_at timestamptz;
 
+-- Falls bei der Migration bereits eine Fragerunde offen ist, beginnt
+-- deren Zeitmessung ab jetzt statt mit einem NULL-Zeitstempel.
+UPDATE public.quiz_room
+SET question_started_at = clock_timestamp()
+WHERE id = 1
+  AND started = true
+  AND current_question > 0
+  AND revealed = false
+  AND question_started_at IS NULL;
+
 CREATE OR REPLACE FUNCTION public.quiz_host(p_pin text, p_action text)
 RETURNS jsonb
 LANGUAGE plpgsql
