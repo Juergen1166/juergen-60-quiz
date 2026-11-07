@@ -205,10 +205,10 @@ function render(s) {
   $('sendBtn').textContent =
     s.player_answered ? 'Antwort abgegeben' : 'Antwort abschicken';
 
-  if (s.player_answered) {
-    message('gameMsg', 'Deine Antwort ist gespeichert.');
-  } else if (s.revealed) {
-    message('gameMsg', 'Die richtigen Antworten sind grün markiert.');
+  if (s.revealed) {
+    message('gameMsg', 'Die richtigen Antworten sind grün markiert. Dein Punktestand wurde aktualisiert.');
+  } else if (s.player_answered) {
+    message('gameMsg', 'Deine Antwort ist gespeichert. Die Auswertung folgt nach Freigabe durch die Spielleitung.');
   } else if (singleChoice) {
     message('gameMsg', 'Bitte eine Antwort auswählen.');
   } else {
@@ -230,12 +230,7 @@ $('sendBtn').addEventListener('click', async () => {
 
     if (error) throw error;
 
-    message(
-      'gameMsg',
-      data.points > 0
-        ? 'Richtig! Punkte gutgeschrieben.'
-        : 'Antwort gespeichert – diesmal leider keine Punkte.'
-    );
+    message('gameMsg', 'Deine Antwort ist gespeichert. Die Auswertung folgt nach Freigabe durch die Spielleitung.');
 
     await refresh();
   } catch (e) {
