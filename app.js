@@ -132,6 +132,7 @@ async function refresh() {
 function render(s) {
   const scores = $('scores');
   scores.innerHTML = '';
+  $('scoresTitle').classList.toggle('hidden', !s.revealed);
 
   (s.scores || []).slice(0, 12).forEach(p => {
     const li = document.createElement('li');
