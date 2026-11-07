@@ -24,7 +24,7 @@ DECLARE
   r public.quiz_room%rowtype;
   total integer;
 BEGIN
-  SELECT * INTO r FROM public.quiz_room WHERE id = 1;
+  SELECT * INTO r FROM public.quiz_room WHERE id = 1 FOR UPDATE;
   IF crypt(p_pin, r.host_pin_hash) <> r.host_pin_hash THEN
     RAISE EXCEPTION 'Die Spielleiter-PIN ist falsch.';
   END IF;
@@ -120,7 +120,7 @@ DECLARE
   result jsonb;
   scores jsonb := '[]'::jsonb;
 BEGIN
-  SELECT * INTO r FROM public.quiz_room WHERE id = 1;
+  SELECT * INTO r FROM public.quiz_room WHERE id = 1 FOR UPDATE;
 
   -- Punktestände werden erst nach Freigabe der aktuellen Frage ausgegeben.
   IF r.revealed THEN
@@ -199,7 +199,7 @@ DECLARE
   r public.quiz_room%rowtype;
   q public.quiz_questions%rowtype;
 BEGIN
-  SELECT * INTO r FROM public.quiz_room WHERE id = 1;
+  SELECT * INTO r FROM public.quiz_room WHERE id = 1 FOR UPDATE;
 
   IF NOT r.started OR r.current_question < 1 OR r.revealed THEN
     RAISE EXCEPTION 'Die Frage ist gerade nicht offen.';
@@ -215,6 +215,7 @@ BEGIN
 
   IF p_selected IS NULL
      OR cardinality(p_selected) = 0
+     OR cardinality(p_selected) <> (SELECT count(DISTINCT x) FROM unnest(p_selected) x)
      OR EXISTS (
        SELECT 1 FROM unnest(p_selected) x
        WHERE x < 0 OR x >= cardinality(q.options)
