@@ -119,6 +119,7 @@ BEGIN
 
   ELSIF p_action = 'reset' THEN
     DELETE FROM public.quiz_answers;
+    DELETE FROM public.quiz_players;
     UPDATE public.quiz_room
     SET started = false,
         current_question = 0,
