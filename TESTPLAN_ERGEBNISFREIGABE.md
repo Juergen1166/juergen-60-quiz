@@ -26,3 +26,9 @@
 
 ## Abnahme
 Erst nach bestandenen Tests SQL in Supabase aktivieren und Änderungen nach main übernehmen. Ein Entwicklungszweig allein ändert die GitHub-Pages-Live-Version nicht.
+
+
+## Ergänzung: Quiz-Finale
+15. Nach Freigabe der letzten Frage und Klick auf „Nächste Frage“ wechselt die Präsentation zur Siegerehrung mit Podium und Konfetti.
+16. Spielleitung klickt „Alle Platzierungen anzeigen“; die Präsentation zeigt alle Spieler nach Punkten sortiert.
+17. Bei Punktgleichheit werden in der vollständigen Liste gleiche Platzierungen vergeben.
