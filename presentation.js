@@ -39,7 +39,7 @@ function showQuestionArt(questionNumber) {
 
   if (Number(questionNumber) === 6) {
     const helmet = document.createElement('img');
-    helmet.src = new URL('./Fahrradhelm%20mit%20rotem%20Streifen.png', import.meta.url).href;
+    helmet.src = 'https://raw.githubusercontent.com/Juergen1166/juergen-60-quiz/quiz-ergebnisfreigabe-zeitwertung/Fahrradhelm%20mit%20rotem%20Streifen.png';
     helmet.alt = 'Fahrradhelm';
     helmet.className = 'question-art-icon bicycle-helmet';
     art.append(helmet);
@@ -62,6 +62,9 @@ function showQuestionArt(questionNumber) {
 const db = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
 
 const playerUrl = new URL('index.html', location.href).href;
+const FINAL_PAGE_SIZE = 20;
+let finalPage = 0;
+let finalScoresCache = [];
 
 // QR-Code in der Begrüßung
 new QRCode($('qr'), {
@@ -77,6 +80,51 @@ new QRCode($('qrCorner'), {
   height: 120
 });
 
+function renderFinalPage(scores) {
+  finalScoresCache = scores || [];
+  const rows = $('finalRows');
+  rows.innerHTML = '';
+
+  const totalPages = Math.max(1, Math.ceil(finalScoresCache.length / FINAL_PAGE_SIZE));
+  finalPage = Math.min(finalPage, totalPages - 1);
+  const start = finalPage * FINAL_PAGE_SIZE;
+  const pageScores = finalScoresCache.slice(start, start + FINAL_PAGE_SIZE);
+
+  let previous = null;
+  let place = 0;
+  finalScoresCache.forEach((p, i) => {
+    if (previous === null || p.score !== previous) place = i + 1;
+    previous = p.score;
+    if (i < start || i >= start + FINAL_PAGE_SIZE) return;
+
+    const row = document.createElement('div');
+    row.className = 'final-row';
+    const rank = document.createElement('span');
+    rank.className = 'place';
+    rank.textContent = place + '.';
+    const name = document.createElement('span');
+    name.textContent = p.name;
+    const score = document.createElement('strong');
+    score.textContent = p.score + ' Punkte';
+    row.append(rank, name, score);
+    rows.append(row);
+  });
+
+  $('finalPageLabel').textContent = `Seite ${finalPage + 1} von ${totalPages} · Plätze ${start + 1}–${Math.min(start + pageScores.length, finalScoresCache.length)}`;
+  $('finalPrev').disabled = finalPage === 0;
+  $('finalNext').disabled = finalPage >= totalPages - 1;
+}
+
+$('finalPrev').addEventListener('click', () => {
+  if (finalPage > 0) finalPage--;
+  renderFinalPage(finalScoresCache);
+});
+$('finalNext').addEventListener('click', () => {
+  const totalPages = Math.max(1, Math.ceil(finalScoresCache.length / FINAL_PAGE_SIZE));
+  if (finalPage < totalPages - 1) finalPage++;
+  renderFinalPage(finalScoresCache);
+});
+
 async function refresh() {
   try {
     const { data, error } = await db.rpc('quiz_state', {
@@ -86,6 +134,59 @@ async function refresh() {
     if (error) throw error;
 
     const q = data.question;
+
+    if (data.finished) {
+      $('welcome').classList.add('hidden');
+      $('game').classList.add('hidden');
+      $('qrCorner').classList.add('hidden');
+      const scores = data.scores || [];
+      if (data.final_list_shown) {
+        $('finalPodium').classList.add('hidden');
+        $('finalRanking').classList.remove('hidden');
+        renderFinalPage(scores);
+      } else {
+        $('finalRanking').classList.add('hidden');
+        $('finalPodium').classList.remove('hidden');
+        const podium = $('podium'); podium.innerHTML = '';
+        const top = scores.slice(0, 3);
+        const positions = [
+          { cls: 'podium-second', medal: '🥈', place: '2' },
+          { cls: 'podium-first', medal: '👑', place: '1' },
+          { cls: 'podium-third', medal: '🥉', place: '3' }
+        ];
+        [top[1], top[0], top[2]].forEach((p, i) => {
+          const pos = positions[i];
+          const card = document.createElement('div'); card.className = 'podium-person ' + pos.cls;
+          if (p) {
+            const medal = document.createElement('div'); medal.className = 'medal'; medal.textContent = pos.medal;
+            const name = document.createElement('div'); name.className = 'winner-name'; name.textContent = p.name;
+            const score = document.createElement('div'); score.className = 'winner-score'; score.textContent = p.score + ' Punkte';
+            card.append(medal, name, score);
+          } else {
+            const empty = document.createElement('div'); empty.className = 'winner-name'; empty.textContent = '—'; card.append(empty);
+          }
+          const block = document.createElement('div'); block.className = 'podium-block'; block.textContent = pos.place; card.append(block);
+          podium.append(card);
+        });
+        const confetti = $('confetti');
+        if (!confetti.dataset.ready) {
+          const pieces = ['🎊','✨','🎉','⭐','🎈'];
+          for (let i=0;i<45;i++) {
+            const piece=document.createElement('span');
+            piece.textContent=pieces[i%pieces.length];
+            piece.style.left=(i*37%100)+'%';
+            piece.style.animationDelay=((i%12)*-0.4)+'s';
+            piece.style.animationDuration=(4+(i%5))+'s';
+            confetti.append(piece);
+          }
+          confetti.dataset.ready='1';
+        }
+      }
+      return;
+    }
+
+    $('finalPodium').classList.add('hidden');
+    $('finalRanking').classList.add('hidden');
 
     // Noch keine Frage gestartet
     if (!q) {
@@ -134,7 +235,7 @@ async function refresh() {
 
       $('leaderboard').innerHTML = '';
 
-      (data.scores || []).slice(0, 10).forEach(p => {
+      (data.scores || []).slice(0, 12).forEach(p => {
         const li = document.createElement('li');
         li.textContent = `${p.name} – ${p.score} Punkte`;
         $('leaderboard').append(li);
