@@ -51,6 +51,7 @@ async function action(a) {
 
 $('startBtn').addEventListener('click', () => doAction('start'));
 $('nextBtn').addEventListener('click', () => doAction('next'));
+$('finalListBtn').addEventListener('click', () => doAction('final_list'));
 $('revealBtn').addEventListener('click', () => doAction('reveal'));
 
 $('resetBtn').addEventListener('click', () => {
@@ -143,9 +144,10 @@ async function refresh() {
     if (error) throw error;
 
     const q = data.question;
-    $('hostQuestion').textContent = q
-      ? `Frage ${q.number} von ${q.total}: ${q.text}`
-      : 'Noch nicht gestartet';
+    $('hostQuestion').textContent = data.finished
+      ? 'Quiz beendet – Siegerehrung läuft.'
+      : q ? `Frage ${q.number} von ${q.total}: ${q.text}` : 'Noch nicht gestartet';
+    $('finalListBtn').classList.toggle('hidden', !data.finished || data.final_list_shown);
 
     $('hostAnswers').innerHTML = '';
 
