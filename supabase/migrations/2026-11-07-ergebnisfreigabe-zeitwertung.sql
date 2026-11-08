@@ -27,6 +27,9 @@ DECLARE
   total integer;
 BEGIN
   SELECT * INTO r FROM public.quiz_room WHERE id = 1 FOR UPDATE;
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Der Quizraum wurde nicht gefunden.';
+  END IF;
   IF crypt(p_pin, r.host_pin_hash) <> r.host_pin_hash THEN
     RAISE EXCEPTION 'Die Spielleiter-PIN ist falsch.';
   END IF;
