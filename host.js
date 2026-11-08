@@ -51,6 +51,7 @@ async function action(a) {
 
 $('startBtn').addEventListener('click', () => doAction('start'));
 $('nextBtn').addEventListener('click', () => doAction('next'));
+$('finalListBtn').addEventListener('click', () => doAction('final_list'));
 $('revealBtn').addEventListener('click', () => doAction('reveal'));
 
 $('resetBtn').addEventListener('click', () => {
@@ -80,7 +81,7 @@ $('resetBtn').addEventListener('click', () => {
 
   const text = document.createElement('p');
   text.textContent =
-    'Möchtest du wirklich alle Antworten und Punkte zurücksetzen? Die Spieler bleiben erhalten.';
+    'Möchtest du das Quiz zurücksetzen? Alle Antworten und Punkte werden gelöscht. Die Spieler bleiben angemeldet und können direkt wieder mitspielen. Die 20 Quizfragen bleiben erhalten.';
   box.append(text);
 
   const cancel = document.createElement('button');
@@ -90,7 +91,7 @@ $('resetBtn').addEventListener('click', () => {
   cancel.addEventListener('click', () => overlay.remove());
 
   const yes = document.createElement('button');
-  yes.textContent = 'Ja, zurücksetzen';
+  yes.textContent = 'Ja, Quiz zurücksetzen';
   yes.className = 'danger';
   yes.style.margin = '8px';
 
@@ -143,9 +144,10 @@ async function refresh() {
     if (error) throw error;
 
     const q = data.question;
-    $('hostQuestion').textContent = q
-      ? `Frage ${q.number} von ${q.total}: ${q.text}`
-      : 'Noch nicht gestartet';
+    $('hostQuestion').textContent = data.finished
+      ? 'Quiz beendet – Siegerehrung läuft.'
+      : q ? `Frage ${q.number} von ${q.total}: ${q.text}` : 'Noch nicht gestartet';
+    $('finalListBtn').classList.toggle('hidden', !data.finished || data.final_list_shown);
 
     $('hostAnswers').innerHTML = '';
 
