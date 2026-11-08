@@ -81,7 +81,7 @@ $('resetBtn').addEventListener('click', () => {
 
   const text = document.createElement('p');
   text.textContent =
-    'Möchtest du wirklich alle Antworten und Punkte zurücksetzen? Die Spieler bleiben erhalten.';
+    'Möchtest du wirklich alle Spieler, Antworten und Punktestände löschen? Die 20 Quizfragen bleiben erhalten.';
   box.append(text);
 
   const cancel = document.createElement('button');
