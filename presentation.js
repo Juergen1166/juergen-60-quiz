@@ -87,6 +87,71 @@ async function refresh() {
 
     const q = data.question;
 
+    if (data.finished) {
+      $('welcome').classList.add('hidden');
+      $('game').classList.add('hidden');
+      $('qrCorner').classList.add('hidden');
+      const scores = data.scores || [];
+      if (data.final_list_shown) {
+        $('finalPodium').classList.add('hidden');
+        $('finalRanking').classList.remove('hidden');
+        const rows = $('finalRows');
+        rows.innerHTML = '';
+        let previous = null, place = 0;
+        scores.forEach((p, i) => {
+          if (previous === null || p.score !== previous) place = i + 1;
+          previous = p.score;
+          const row = document.createElement('div');
+          row.className = 'final-row';
+          const rank = document.createElement('span'); rank.className = 'place'; rank.textContent = place + '.';
+          const name = document.createElement('span'); name.textContent = p.name;
+          const score = document.createElement('strong'); score.textContent = p.score + ' Punkte';
+          row.append(rank, name, score); rows.append(row);
+        });
+      } else {
+        $('finalRanking').classList.add('hidden');
+        $('finalPodium').classList.remove('hidden');
+        const podium = $('podium'); podium.innerHTML = '';
+        const top = scores.slice(0, 3);
+        const positions = [
+          { cls: 'podium-second', medal: '🥈', place: '2' },
+          { cls: 'podium-first', medal: '👑', place: '1' },
+          { cls: 'podium-third', medal: '🥉', place: '3' }
+        ];
+        [top[1], top[0], top[2]].forEach((p, i) => {
+          const pos = positions[i];
+          const card = document.createElement('div'); card.className = 'podium-person ' + pos.cls;
+          if (p) {
+            const medal = document.createElement('div'); medal.className = 'medal'; medal.textContent = pos.medal;
+            const name = document.createElement('div'); name.className = 'winner-name'; name.textContent = p.name;
+            const score = document.createElement('div'); score.className = 'winner-score'; score.textContent = p.score + ' Punkte';
+            card.append(medal, name, score);
+          } else {
+            const empty = document.createElement('div'); empty.className = 'winner-name'; empty.textContent = '—'; card.append(empty);
+          }
+          const block = document.createElement('div'); block.className = 'podium-block'; block.textContent = pos.place; card.append(block);
+          podium.append(card);
+        });
+        const confetti = $('confetti');
+        if (!confetti.dataset.ready) {
+          const pieces = ['🎊','✨','🎉','⭐','🎈'];
+          for (let i=0;i<45;i++) {
+            const piece=document.createElement('span');
+            piece.textContent=pieces[i%pieces.length];
+            piece.style.left=(i*37%100)+'%';
+            piece.style.animationDelay=((i%12)*-0.4)+'s';
+            piece.style.animationDuration=(4+(i%5))+'s';
+            confetti.append(piece);
+          }
+          confetti.dataset.ready='1';
+        }
+      }
+      return;
+    }
+
+    $('finalPodium').classList.add('hidden');
+    $('finalRanking').classList.add('hidden');
+
     // Noch keine Frage gestartet
     if (!q) {
       $('welcome').classList.remove('hidden');
