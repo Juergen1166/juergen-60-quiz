@@ -18,7 +18,7 @@
 7. Erneuter Klick auf „Antwort anzeigen“ darf Punkte nicht doppelt vergeben.
 8. Nächste Frage starten: Lösung und Rangliste verschwinden, Zeitmessung beginnt neu.
 9. Mehrfachauswahl testen: nur exakt alle richtigen Antworten ergeben Punkte.
-10. Reset: Antworten/Punkte gelöscht, Spieler bleiben erhalten, Startzeit wird zurückgesetzt.
+10. Reset: Spieler und Antworten werden gelöscht; Fragen bleiben erhalten; Spielstatus und Startzeit werden zurückgesetzt.
 11. Handy-Seite neu laden: bestehende Spieler-ID und abgegebene Antwort bleiben erkannt.
 12. Test der letzten Frage und des bisherigen QR-Codes.
 13. Grenzfälle: 5 Sekunden = 1000, 105 Sekunden oder später = 200, falsche Antwort = 0.
