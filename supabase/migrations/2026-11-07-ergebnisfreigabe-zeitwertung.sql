@@ -2,7 +2,9 @@
 -- Erst nach Prüfung auf dem Entwicklungszweig in Supabase ausführen.
 
 ALTER TABLE public.quiz_room
-  ADD COLUMN IF NOT EXISTS question_started_at timestamptz;
+  ADD COLUMN IF NOT EXISTS question_started_at timestamptz,
+  ADD COLUMN IF NOT EXISTS finished boolean NOT NULL DEFAULT false,
+  ADD COLUMN IF NOT EXISTS final_list_shown boolean NOT NULL DEFAULT false;
 
 -- Falls bei der Migration bereits eine Fragerunde offen ist, beginnt
 -- deren Zeitmessung ab jetzt statt mit einem NULL-Zeitstempel.
@@ -39,7 +41,9 @@ BEGIN
     SET started = true,
         current_question = 1,
         revealed = false,
-        question_started_at = clock_timestamp()
+        question_started_at = clock_timestamp(),
+        finished = false,
+        final_list_shown = false
     WHERE id = 1;
 
   ELSIF p_action = 'next' THEN
@@ -48,7 +52,9 @@ BEGIN
       SET started = true,
           current_question = 1,
           revealed = false,
-          question_started_at = clock_timestamp()
+          question_started_at = clock_timestamp(),
+          finished = false,
+          final_list_shown = false
       WHERE id = 1;
     ELSIF NOT r.revealed THEN
       RAISE EXCEPTION 'Bitte zuerst die Antwort anzeigen.';
@@ -59,8 +65,16 @@ BEGIN
           question_started_at = clock_timestamp()
       WHERE id = 1;
     ELSE
-      RETURN jsonb_build_object('ok', true, 'action', 'finished');
+      UPDATE public.quiz_room
+      SET finished = true, final_list_shown = false
+      WHERE id = 1;
     END IF;
+
+  ELSIF p_action = 'final_list' THEN
+    IF NOT r.finished THEN
+      RAISE EXCEPTION 'Die Siegerehrung ist noch nicht gestartet.';
+    END IF;
+    UPDATE public.quiz_room SET final_list_shown = true WHERE id = 1;
 
   ELSIF p_action = 'reveal' THEN
     IF NOT r.revealed THEN
@@ -97,7 +111,9 @@ BEGIN
     SET started = false,
         current_question = 0,
         revealed = false,
-        question_started_at = NULL
+        question_started_at = NULL,
+        finished = false,
+        final_list_shown = false
     WHERE id = 1;
 
   ELSE
@@ -145,6 +161,8 @@ BEGIN
     'started', r.started,
     'current_question', r.current_question,
     'revealed', r.revealed,
+    'finished', r.finished,
+    'final_list_shown', r.final_list_shown,
     'scores', scores,
     'player_answered', false
   );
