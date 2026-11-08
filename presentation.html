@@ -7,6 +7,19 @@
   <title>Quiz – Präsentation</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+    .presentation {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
    body {
   background: linear-gradient(135deg, #fff9ed, #f3e4c9);
   color: #49391f;
@@ -123,6 +136,29 @@
       margin: 10px auto 24px;
       line-height: 1.15;
     }
+    .final-screen {
+      min-height: 90vh; color: #fff; background: radial-gradient(circle at top, #18385a, #07172b 70%);
+      border: 5px solid #d8a832; border-radius: 24px; padding: 28px 18px; position: relative; overflow: hidden;
+    }
+    .final-screen h1 { color: #ffd76a; margin: 8px 0; }
+    .final-subtitle { color: #fff0bf; font-size: clamp(18px,2vw,28px) !important; }
+    .podium { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 10px; max-width: 1050px; margin: 30px auto 20px; }
+    .podium-person { display:flex; flex-direction:column; justify-content:flex-end; align-items:center; min-width:0; }
+    .podium-person .medal { font-size: clamp(34px,5vw,62px); }
+    .podium-person .winner-name { font-size: clamp(18px,2.5vw,30px); font-weight:800; overflow-wrap:anywhere; }
+    .podium-person .winner-score { font-size: clamp(14px,1.8vw,22px); }
+    .podium-block { width:100%; display:flex; align-items:center; justify-content:center; color:#172033; font-size:clamp(40px,6vw,76px); font-weight:900; border-radius:12px 12px 0 0; box-shadow:0 0 25px #ffd76a55; }
+    .podium-second .podium-block { height:150px; background:linear-gradient(#f3f5f8,#9da9b9); }
+    .podium-first .podium-block { height:210px; background:linear-gradient(#fff0a8,#d89b16); }
+    .podium-third .podium-block { height:110px; background:linear-gradient(#f3c09b,#a95d36); }
+    .final-message { color:#ffd76a; font-weight:900; font-size:clamp(25px,4vw,48px) !important; margin:25px 0 4px; }
+    .final-list { max-width:1050px; margin:22px auto; text-align:left; }
+    .final-row { display:grid; grid-template-columns:70px 1fr auto; gap:14px; align-items:center; background:#203752; padding:12px 18px; border-radius:10px; margin:8px 0; font-size:clamp(18px,2.4vw,30px) !important; }
+    .final-row .place { color:#ffd76a; font-weight:900; }
+    .confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .confetti span { position:absolute; top:-30px; font-size:24px; animation:fall 5s linear infinite; }
+    @keyframes fall { to { transform:translateY(105vh) rotate(720deg); } }
+    @media(max-width:650px) { .podium { gap:5px; } .podium-second .podium-block{height:105px}.podium-first .podium-block{height:145px}.podium-third .podium-block{height:75px}.final-row{grid-template-columns:42px 1fr auto;padding:9px;} }
     .welcome-wrap {
   position: relative;
   width: 100%;
@@ -153,6 +189,219 @@
   width: 100%;
   height: auto;
 }
+
+    /* Kompakteres Layout für Beamer: Fragen und Antworten passen besser auf eine Seite */
+    .presentation {
+      padding: 14px 24px;
+    }
+    #questionNumber {
+      margin: 4px 0 6px;
+      line-height: 1.1;
+      font-size: clamp(20px, 2vw, 28px);
+    }
+    .presentation .question-art {
+      width: clamp(88px, 10vw, 125px);
+      min-height: clamp(88px, 10vw, 125px);
+      margin: 5px auto 10px;
+      padding: 8px;
+      border-radius: 24px;
+    }
+    .presentation .question-art-icon {
+      font-size: clamp(44px, 6vw, 68px);
+    }
+    .presentation .bicycle-helmet {
+      width: clamp(68px, 8vw, 100px);
+      height: auto;
+    }
+    .presentation .question-art-caption {
+      font-size: clamp(9px, 1vw, 12px);
+    }
+    .presentation #questionText {
+      font-size: clamp(27px, 3.8vw, 52px);
+      line-height: 1.08;
+      margin: 5px auto 12px;
+    }
+    #options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 1250px;
+      margin: 10px auto;
+    }
+    #options li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 68px;
+      margin: 0;
+      padding: 10px 14px;
+      font-size: clamp(19px, 2.1vw, 29px);
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+    #answerMessage {
+      font-size: clamp(22px, 3vw, 40px);
+      line-height: 1.12;
+      margin: 8px 0;
+    }
+    #ranking h2 {
+      font-size: clamp(24px, 3vw, 40px);
+      margin: 8px 0;
+    }
+    #leaderboard {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 30px;
+      width: 100%;
+      max-width: 1300px;
+      padding: 0;
+      margin: 0 auto;
+      font-size: clamp(24px, 3vw, 42px);
+      line-height: 1.18;
+      list-style-position: inside;
+    }
+    #leaderboard li {
+      margin: 0;
+      padding: 5px 8px;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    @media (max-width: 700px) {
+      #options, #leaderboard {
+        grid-template-columns: 1fr;
+      }
+      .presentation {
+        padding: 10px 12px;
+      }
+    }
+
+
+    /* Feinschliff: kompaktere Antwortfelder und größere Frage-Motive */
+    .presentation .question-art {
+      width: clamp(135px, 14vw, 175px);
+      min-height: clamp(135px, 14vw, 175px);
+      margin: 8px auto 14px;
+      padding: 12px;
+      border-radius: 30px;
+      gap: 8px;
+    }
+    .presentation .question-art-icon {
+      font-size: clamp(66px, 7vw, 88px);
+    }
+    .presentation .bicycle-helmet {
+      width: clamp(90px, 10vw, 125px);
+      height: auto;
+    }
+    .presentation .question-art-caption {
+      max-width: 260px;
+      font-size: clamp(12px, 1.25vw, 16px);
+      line-height: 1.15;
+    }
+    #options {
+      max-width: 1120px;
+      column-gap: 24px;
+      row-gap: 14px;
+      margin: 14px auto;
+    }
+    #options li {
+      width: 100%;
+      max-width: 520px;
+      justify-self: center;
+      min-height: 76px;
+      padding: 12px 18px;
+      border-width: 2px;
+      border-radius: 12px;
+      font-size: clamp(20px, 2.15vw, 30px);
+    }
+
+
+    /* Antworttexte auf dem Beamer stärker hervorheben */
+    #options li {
+      font-size: clamp(23px, 2.5vw, 34px);
+      font-weight: 800;
+    }
+
+
+    /* Abschluss-Rangliste: 20 Personen je Seite, zweispaltig */
+    #finalRanking {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 0;
+      height: calc(100vh - 28px);
+      padding: 12px 18px;
+    }
+    #finalRanking h1 {
+      font-size: clamp(30px, 4vw, 52px);
+      margin: 2px 0 4px;
+    }
+    #finalRanking .final-subtitle {
+      margin: 2px 0 8px;
+    }
+    #finalRanking .final-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: column;
+      grid-template-rows: repeat(10, minmax(0, 1fr));
+      gap: 5px 14px;
+      width: 100%;
+      max-width: 1300px;
+      margin: 6px auto;
+      flex: 1;
+      min-height: 0;
+    }
+    #finalRanking .final-row {
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 6px 10px;
+      margin: 0;
+      border-radius: 8px;
+      font-size: clamp(16px, 1.8vw, 23px) !important;
+      min-width: 0;
+    }
+    #finalRanking .final-row strong {
+      white-space: nowrap;
+      font-size: .88em;
+    }
+    .final-page-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin: 6px auto 2px;
+      color: #fff0bf;
+      font-weight: 800;
+      font-size: clamp(16px, 1.8vw, 22px);
+    }
+    .final-page-controls button {
+      width: auto;
+      min-width: 130px;
+      margin: 0;
+      padding: 9px 16px;
+      font-size: 16px;
+    }
+    #finalRanking .final-message {
+      margin: 6px 0 0;
+      font-size: clamp(20px, 2.5vw, 30px) !important;
+    }
+    @media (max-width: 700px) {
+      #finalRanking .final-list {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(20, minmax(0, 1fr));
+        grid-auto-flow: row;
+      }
+      #finalRanking .final-row {
+        font-size: 15px !important;
+      }
+      .final-page-controls {
+        gap: 8px;
+      }
+      .final-page-controls button {
+        min-width: 95px;
+        padding: 8px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -160,7 +409,7 @@
  <section id="welcome">
   <div class="welcome-wrap">
     <img
-      src="geburtstagsquiz.png"
+      src="https://raw.githubusercontent.com/Juergen1166/juergen-60-quiz/quiz-ergebnisfreigabe-zeitwertung/geburtstagsquiz.png"
       alt="Geburtstagsquiz mit Jürgen und seiner Frau"
       class="welcome-poster">
     <div id="qr"></div>
@@ -178,12 +427,31 @@
         <ol id="leaderboard"></ol>
       </div>
     </section>
+    <section id="finalPodium" class="final-screen hidden">
+      <div class="confetti" id="confetti"></div>
+      <h1>🏆 Jürgens 60 🏆</h1>
+      <p class="final-subtitle">Die Legende hat Geburtstag! · Unsere Quiz-Champions</p>
+      <div class="podium" id="podium"></div>
+      <p class="final-message">HERZLICHEN GLÜCKWUNSCH!</p>
+      <p>Danke an alle, die mitgespielt haben! 🎉</p>
+    </section>
+    <section id="finalRanking" class="final-screen hidden">
+      <h1>Die große Ergebnisliste</h1>
+      <p class="final-subtitle">Jürgens 60 · Alle Mitspieler im Überblick</p>
+      <div id="finalRows" class="final-list"></div>
+      <div id="finalPageControls" class="final-page-controls">
+        <button id="finalPrev" type="button" class="secondary">← Zurück</button>
+        <span id="finalPageLabel">Seite 1</span>
+        <button id="finalNext" type="button" class="secondary">Weiter →</button>
+      </div>
+      <p class="final-message">Danke fürs Mitspielen! 🎊</p>
+    </section>
   </main>
 
   <div id="qrCorner" class="qr-corner hidden"></div>
 
   <script src="config.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script type="module" src="presentation.js?v=helmet5"></script>
+  <script type="module" src="presentation.js?v=compactrefine1"></script>
 </body>
 </html>
