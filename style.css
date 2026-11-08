@@ -241,3 +241,109 @@ footer {
 
 /* Gezeichneter Fahrradhelm für Frage 6 */
 .bicycle-helmet { width: 88px; height: 66px; flex: none; }
+
+
+/* Kompakte Spielansicht auf Smartphones: Abschicken ohne Scrollen */
+@media (max-width: 600px) {
+  body:has(#game:not(.hidden)) header,
+  body:has(#game:not(.hidden)) footer {
+    display: none;
+  }
+
+  body:has(#game:not(.hidden)) .wrap {
+    padding: 7px 9px 10px;
+    max-width: 100%;
+  }
+
+  #game {
+    padding: 12px;
+    margin: 0;
+    border-radius: 14px;
+  }
+
+  #game #status {
+    font-size: .78rem;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  #game .question-art {
+    width: 68px;
+    min-height: 68px;
+    padding: 5px;
+    margin: 4px auto 7px;
+    border-radius: 18px;
+    gap: 2px;
+  }
+
+  #game .question-art-icon {
+    font-size: 34px;
+  }
+
+  #game .question-art-caption {
+    font-size: 8px;
+    line-height: 1.05;
+  }
+
+  #game .bicycle-helmet {
+    width: 54px !important;
+    height: auto !important;
+  }
+
+  #questionTitle {
+    font-size: clamp(18px, 5vw, 23px);
+    line-height: 1.13;
+    margin: 5px 0 9px;
+  }
+
+  #answers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin: 9px 0;
+  }
+
+  #answers .answer {
+    min-width: 0;
+    min-height: 58px;
+    padding: 8px;
+    gap: 7px;
+    margin: 0;
+    border-radius: 10px;
+    font-size: clamp(13px, 3.6vw, 16px);
+    line-height: 1.15;
+  }
+
+  #answers .answer input {
+    width: 19px;
+    height: 19px;
+  }
+
+  #sendBtn {
+    margin-top: 5px;
+    padding: 12px 14px;
+    min-height: 46px;
+    font-size: 1rem;
+  }
+
+  #gameMsg {
+    margin: 6px 0 0;
+    min-height: 0;
+    font-size: .82rem;
+    line-height: 1.15;
+  }
+
+  #newPlayerBtn {
+    margin: 0 0 5px;
+    padding: 7px 10px;
+    font-size: .82rem;
+  }
+}
+
+@media (max-width: 360px) {
+  #answers .answer {
+    font-size: 12px;
+    padding: 7px 5px;
+    gap: 5px;
+  }
+}
