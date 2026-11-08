@@ -123,6 +123,29 @@
       margin: 10px auto 24px;
       line-height: 1.15;
     }
+    .final-screen {
+      min-height: 90vh; color: #fff; background: radial-gradient(circle at top, #18385a, #07172b 70%);
+      border: 5px solid #d8a832; border-radius: 24px; padding: 28px 18px; position: relative; overflow: hidden;
+    }
+    .final-screen h1 { color: #ffd76a; margin: 8px 0; }
+    .final-subtitle { color: #fff0bf; font-size: clamp(18px,2vw,28px) !important; }
+    .podium { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 10px; max-width: 1050px; margin: 30px auto 20px; }
+    .podium-person { display:flex; flex-direction:column; justify-content:flex-end; align-items:center; min-width:0; }
+    .podium-person .medal { font-size: clamp(34px,5vw,62px); }
+    .podium-person .winner-name { font-size: clamp(18px,2.5vw,30px); font-weight:800; overflow-wrap:anywhere; }
+    .podium-person .winner-score { font-size: clamp(14px,1.8vw,22px); }
+    .podium-block { width:100%; display:flex; align-items:center; justify-content:center; color:#172033; font-size:clamp(40px,6vw,76px); font-weight:900; border-radius:12px 12px 0 0; box-shadow:0 0 25px #ffd76a55; }
+    .podium-second .podium-block { height:150px; background:linear-gradient(#f3f5f8,#9da9b9); }
+    .podium-first .podium-block { height:210px; background:linear-gradient(#fff0a8,#d89b16); }
+    .podium-third .podium-block { height:110px; background:linear-gradient(#f3c09b,#a95d36); }
+    .final-message { color:#ffd76a; font-weight:900; font-size:clamp(25px,4vw,48px) !important; margin:25px 0 4px; }
+    .final-list { max-width:1050px; margin:22px auto; text-align:left; }
+    .final-row { display:grid; grid-template-columns:70px 1fr auto; gap:14px; align-items:center; background:#203752; padding:12px 18px; border-radius:10px; margin:8px 0; font-size:clamp(18px,2.4vw,30px) !important; }
+    .final-row .place { color:#ffd76a; font-weight:900; }
+    .confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .confetti span { position:absolute; top:-30px; font-size:24px; animation:fall 5s linear infinite; }
+    @keyframes fall { to { transform:translateY(105vh) rotate(720deg); } }
+    @media(max-width:650px) { .podium { gap:5px; } .podium-second .podium-block{height:105px}.podium-first .podium-block{height:145px}.podium-third .podium-block{height:75px}.final-row{grid-template-columns:42px 1fr auto;padding:9px;} }
     .welcome-wrap {
   position: relative;
   width: 100%;
@@ -177,6 +200,20 @@
         <h2>Aktueller Punktestand</h2>
         <ol id="leaderboard"></ol>
       </div>
+    </section>
+    <section id="finalPodium" class="final-screen hidden">
+      <div class="confetti" id="confetti"></div>
+      <h1>🏆 Jürgens 60 🏆</h1>
+      <p class="final-subtitle">Die Legende hat Geburtstag! · Unsere Quiz-Champions</p>
+      <div class="podium" id="podium"></div>
+      <p class="final-message">HERZLICHEN GLÜCKWUNSCH!</p>
+      <p>Danke an alle, die mitgespielt haben! 🎉</p>
+    </section>
+    <section id="finalRanking" class="final-screen hidden">
+      <h1>Die große Ergebnisliste</h1>
+      <p class="final-subtitle">Jürgens 60 · Alle Mitspieler im Überblick</p>
+      <div id="finalRows" class="final-list"></div>
+      <p class="final-message">Danke fürs Mitspielen! 🎊</p>
     </section>
   </main>
 
