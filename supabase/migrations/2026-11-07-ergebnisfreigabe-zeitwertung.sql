@@ -37,6 +37,12 @@ BEGIN
     RETURN jsonb_build_object('ok', true, 'action', 'check');
 
   ELSIF p_action = 'start' THEN
+    IF total < 1 THEN
+      RAISE EXCEPTION 'Es sind keine Quizfragen vorhanden.';
+    END IF;
+    IF EXISTS (SELECT 1 FROM public.quiz_answers) THEN
+      RAISE EXCEPTION 'Es gibt bereits Antworten. Bitte zuerst zurücksetzen.';
+    END IF;
     UPDATE public.quiz_room
     SET started = true,
         current_question = 1,
@@ -77,6 +83,9 @@ BEGIN
     UPDATE public.quiz_room SET final_list_shown = true WHERE id = 1;
 
   ELSIF p_action = 'reveal' THEN
+    IF NOT r.started OR r.current_question < 1 OR r.current_question > total THEN
+      RAISE EXCEPTION 'Es läuft gerade keine gültige Frage.';
+    END IF;
     IF NOT r.revealed THEN
       UPDATE public.quiz_answers a
       SET points_awarded =
@@ -230,6 +239,10 @@ BEGIN
   SELECT * INTO q
   FROM public.quiz_questions
   WHERE question_no = r.current_question;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Die aktuelle Quizfrage wurde nicht gefunden.';
+  END IF;
 
   IF p_selected IS NULL
      OR cardinality(p_selected) = 0
