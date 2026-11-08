@@ -37,7 +37,7 @@ art.dataset.questionNumber = String(questionNumber);
   if (Number(questionNumber) === 6) {
     // Neues Fahrradhelm-Bild für Frage 6
 const helmet = document.createElement('img');
-helmet.src = 'Fahrradhelm%20mit%20rotem%20Streifen.png';
+helmet.src = 'https://raw.githubusercontent.com/Juergen1166/juergen-60-quiz/quiz-ergebnisfreigabe-zeitwertung/Fahrradhelm%20mit%20rotem%20Streifen.png';
 helmet.alt = 'Fahrradhelm';
 helmet.className = 'question-art-icon bicycle-helmet';
 helmet.style.width = '100px';
@@ -132,6 +132,7 @@ async function refresh() {
 function render(s) {
   const scores = $('scores');
   scores.innerHTML = '';
+  $('scoresTitle').classList.toggle('hidden', !s.revealed);
 
   (s.scores || []).slice(0, 12).forEach(p => {
     const li = document.createElement('li');
@@ -156,7 +157,7 @@ function render(s) {
   }
 
   $('status').textContent =
-    `Frage ${q.number} von ${q.total} · ${q.points} Punkte`;
+    `Frage ${q.number} von ${q.total}`;
 
   showQuestionArt(q.number);
   $('questionTitle').textContent = q.text;
@@ -205,10 +206,10 @@ function render(s) {
   $('sendBtn').textContent =
     s.player_answered ? 'Antwort abgegeben' : 'Antwort abschicken';
 
-  if (s.player_answered) {
-    message('gameMsg', 'Deine Antwort ist gespeichert.');
-  } else if (s.revealed) {
-    message('gameMsg', 'Die richtigen Antworten sind grün markiert.');
+  if (s.revealed) {
+    message('gameMsg', 'Die richtigen Antworten sind grün markiert. Dein Punktestand wurde aktualisiert.');
+  } else if (s.player_answered) {
+    message('gameMsg', 'Deine Antwort ist gespeichert. Die Auswertung folgt nach Freigabe durch die Spielleitung.');
   } else if (singleChoice) {
     message('gameMsg', 'Bitte eine Antwort auswählen.');
   } else {
@@ -230,12 +231,7 @@ $('sendBtn').addEventListener('click', async () => {
 
     if (error) throw error;
 
-    message(
-      'gameMsg',
-      data.points > 0
-        ? 'Richtig! Punkte gutgeschrieben.'
-        : 'Antwort gespeichert – diesmal leider keine Punkte.'
-    );
+    message('gameMsg', 'Deine Antwort ist gespeichert. Die Auswertung folgt nach Freigabe durch die Spielleitung.');
 
     await refresh();
   } catch (e) {
